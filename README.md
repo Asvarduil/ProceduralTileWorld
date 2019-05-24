@@ -2,7 +2,7 @@
 This is a tech demo of a system to create a procedural tiled world using noise and the Phaser.js library.
 
 # Setup instructions
-Once you've pulled the repository, make sure to run npm install from the project root, to get all the node modules.
+Once you've pulled the repository, make sure to run `npm install` from the project root, to get all the node modules.
 You will need some kind of web server in order to run the project.  If using Visual Studio Code, I recommend Live Server, because it's easy.
 
 # Overview
