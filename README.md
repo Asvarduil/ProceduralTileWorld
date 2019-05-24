@@ -9,3 +9,5 @@ You will need some kind of web server in order to run the project.  If using Vis
 This is a proof-of-concept using Phaser Community Edition to create a dynamic world, similar to what one sees in games like MineCraft.  Using a finite set of tiles, and a noise function, we can theoretically create a whole world.
 
 This project is not itself a game, though it has some predefined states, and a player character that you can use to explore your random world.  There are impassable objects, and it's not guaranteed that your character can go very far at all.
+
+The ultimate goal of this project is to create procedural worlds similar to those seen in eastern style RPGs like Dragon Quest or the early Final Fantasy games.  Presumably, one can use these as a starting point for one's own games.
