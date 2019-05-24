@@ -1,5 +1,5 @@
-# ProceduralTileWorld
-This is a tech demo of a system to create a procedural tiled world using noise and the Phaser.js library.
+# Procedural Tile World
+This is a tech demo/research project for a system to create a procedural tiled world using noise and the Phaser.js library.
 
 # Setup instructions
 Once you've pulled the repository, make sure to run `npm install` from the project root, to get all the node modules.
