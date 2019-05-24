@@ -1,0 +1,18 @@
+{
+  "name": "proceduraltileworld",
+  "version": "1.0.0",
+  "description": "System to create a procedural tiled world using noise and the Phaser.js library.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrew Gray",
+  "license": "ISC",
+  "dependencies": {
+    "phaser-ce": "^2.13.2",
+    "simplex-noise": "^2.4.0"
+  },
+  "devDependencies": {
+    "requirejs": "^2.3.6"
+  }
+}

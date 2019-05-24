@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "amd",
+        "sourceMap": true,
+        "outFile": "./allInOne.js",
+        "typeRoots": [
+            "./node_modules/phaser-ce/typescript"
+        ]
+    },
+    "compileOnSave": true
+}
