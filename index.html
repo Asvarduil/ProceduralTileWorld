@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8" />
+
         <title>Procedural World Tech Demo</title>
-        <link rel="stylesheet" src="styles.css"></link>
-        <script src="require.min.js"></script>
+
+        <link rel="stylesheet" src="styles.css" />
+        <script src="lib/require.min.js"></script>
+        <script src="lib/phaser.min.js"></script>
         <script src="allInOne.js"></script>
     </head>
     <body>
-        <canvas id="canvas"></canvas>
+        <canvas id="content"></canvas>
+        <script>
+            // Hit the main entry point...
+            require(['app/app'], function () {});
+        </script>
     </body>
 </html>

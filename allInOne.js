@@ -1,10 +1,7 @@
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    }
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -162,14 +159,36 @@ define("kits/ikit", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
 });
-define("kits/kits", ["require", "exports"], function (require, exports) {
+define("kits/tiles/tiles.kit", ["require", "exports", "app/app"], function (require, exports, app_4) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var TilesKit = /** @class */ (function () {
+        function TilesKit() {
+        }
+        TilesKit.prototype.loadAssets = function () {
+            // Overworld tileset...
+            app_4.App.game.load.image('overworld-tiles', 'assets/overworld-tiles.png');
+            app_4.App.game.load.json('overworld-tile-data', 'assets/overworld-tiles.json');
+        };
+        TilesKit.prototype.drawAssets = function () {
+            return {
+                'overworldTileData': app_4.App.game.cache.getJSON('overworld-tile-data')
+            };
+        };
+        return TilesKit;
+    }());
+    exports.TilesKit = TilesKit;
+});
+define("kits/kits", ["require", "exports", "kits/tiles/tiles.kit"], function (require, exports, tiles_kit_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var KitManager = /** @class */ (function () {
         function KitManager() {
             this.kits = [];
+            console.info('Kit manager has been initialized.');
             this.kits = [
-            // Put all your kits here!
+                // Put all your kits here!
+                { name: 'Tiles', kit: new tiles_kit_1.TilesKit() }
             ];
         }
         KitManager.prototype.loadKit = function (name) {
@@ -212,7 +231,7 @@ define("app/app", ["require", "exports", "app/states/states", "kits/kits"], func
     }());
     exports.App = App;
     window.onload = function () {
-        new App();
+        var app = new App();
     };
 });
 define("app/states/template.state", ["require", "exports"], function (require, exports) {
@@ -243,28 +262,12 @@ define("kits/template/template.kit", ["require", "exports"], function (require, 
         }
         TemplateKit.prototype.loadAssets = function () {
         };
+        TemplateKit.prototype.drawAssets = function () {
+            // Return an object that contains relevant assets for the kit.
+            return {};
+        };
         return TemplateKit;
     }());
     exports.TemplateKit = TemplateKit;
-});
-define("kits/tiles/tiles.kit", ["require", "exports", "app/app"], function (require, exports, app_4) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var TilesKit = /** @class */ (function () {
-        function TilesKit() {
-        }
-        TilesKit.prototype.loadAssets = function () {
-            // Overworld tileset...
-            app_4.App.game.load.image('overworld-tiles', 'assets/overworld-tiles.png');
-            app_4.App.game.load.json('overworld-tile-data', 'assets/overworld-tiles.json');
-        };
-        TilesKit.prototype.drawAssets = function () {
-            return {
-                'overworldTileData': app_4.App.game.cache.getJSON('overworld-tile-data')
-            };
-        };
-        return TilesKit;
-    }());
-    exports.TilesKit = TilesKit;
 });
 //# sourceMappingURL=allInOne.js.map

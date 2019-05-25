@@ -31,5 +31,5 @@ export class App {
 }
 
 window.onload = () => {
-    new App();
+    const app = new App();
 }

@@ -12,7 +12,5 @@
     "phaser-ce": "^2.13.2",
     "simplex-noise": "^2.4.0"
   },
-  "devDependencies": {
-    "requirejs": "^2.3.6"
-  }
+  "devDependencies": {}
 }
