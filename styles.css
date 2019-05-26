@@ -2,11 +2,12 @@
 
 body {
     background-color: #333;
+    text-align: center;
 }
 
 #content {
     width: 640px;
     height: 480px;
     background-color: black;
-    border: 1px solid #999;
+    box-shadow: 0 2px 5px black;
 }
