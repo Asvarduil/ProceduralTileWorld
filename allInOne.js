@@ -165,6 +165,9 @@ define("kits/tiles/tiles.kit", ["require", "exports", "app/app"], function (requ
     var TilesKit = /** @class */ (function () {
         function TilesKit() {
         }
+        TilesKit.prototype.hasDependencies = function () {
+            return true;
+        };
         TilesKit.prototype.loadAssets = function () {
             // Overworld tileset...
             app_4.App.game.load.image('overworld-tiles', 'assets/overworld-tiles.png');
@@ -260,6 +263,8 @@ define("kits/template/template.kit", ["require", "exports"], function (require, 
     var TemplateKit = /** @class */ (function () {
         function TemplateKit() {
         }
+        TemplateKit.prototype.hasDependencies = function () {
+        };
         TemplateKit.prototype.loadAssets = function () {
         };
         TemplateKit.prototype.drawAssets = function () {
@@ -269,5 +274,27 @@ define("kits/template/template.kit", ["require", "exports"], function (require, 
         return TemplateKit;
     }());
     exports.TemplateKit = TemplateKit;
+});
+define("kits/world-gen/world-gen.kit", ["require", "exports", "app/app"], function (require, exports, app_5) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var WorldGenKit = /** @class */ (function () {
+        function WorldGenKit() {
+        }
+        WorldGenKit.prototype.hasDependencies = function () {
+            var hasTilesKit = app_5.App.kits.getByName("Tiles") != null;
+            var simplexNoisePresent = window.SimplexNoise != null;
+            return hasTilesKit
+                && simplexNoisePresent;
+        };
+        WorldGenKit.prototype.loadAssets = function () {
+        };
+        WorldGenKit.prototype.drawAssets = function () {
+            // Return an object that contains relevant assets for the kit.
+            return {};
+        };
+        return WorldGenKit;
+    }());
+    exports.WorldGenKit = WorldGenKit;
 });
 //# sourceMappingURL=allInOne.js.map

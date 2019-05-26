@@ -6,6 +6,8 @@ export class TitleState extends Phaser.State {
     }
 
     create() {
+        
+
         App.states.load('Game');
     }
 

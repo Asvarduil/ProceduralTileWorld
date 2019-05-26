@@ -7,6 +7,10 @@ export interface ITileData {
 }
 
 export class TilesKit implements IKit {
+    hasDependencies(): boolean {
+        return true;
+    }
+
     loadAssets() {
         // Overworld tileset...
         App.game.load.image('overworld-tiles', 'assets/overworld-tiles.png');

@@ -6,7 +6,7 @@ export class GameState extends Phaser.State {
     }
 
     create() {
-
+        // TODO: Pull map that was generated with world builder.
     }
 
     update() {

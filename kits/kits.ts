@@ -1,6 +1,7 @@
 import { IKit } from './ikit';
 
 import { TilesKit } from './tiles/tiles.kit';
+import { WorldGenKit } from './world-gen/world-gen.kit';
 
 export class KitManager {
     kits: { name: string, kit: IKit }[] = [];
@@ -9,7 +10,8 @@ export class KitManager {
         console.info('Kit manager has been initialized.');
         this.kits = [
             // Put all your kits here!
-            { name: 'Tiles', kit: new TilesKit() }
+            { name: 'Tiles', kit: new TilesKit() },
+            { name: 'WorldGen', kit: new WorldGenKit() }
         ]
     }
 
@@ -33,5 +35,9 @@ export class KitManager {
         }
 
         return result;
+    }
+
+    exists(name: string): boolean {
+        return this.getByName(name) != null;
     }
 }
