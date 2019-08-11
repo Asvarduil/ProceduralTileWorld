@@ -12,6 +12,8 @@ export class StateManager {
     states: { name: string, class: any }[] = [];
 
     constructor() {
+        console.info('State manager has been initialized');
+        
         this.states = [
             { name: 'Init', class: InitState },
             { name: 'Title', class: TitleState },

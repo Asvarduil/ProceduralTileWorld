@@ -15,6 +15,8 @@ export class TilesKit implements IKit {
         // Overworld tileset...
         App.game.load.image('overworld-tiles', 'assets/overworld-tiles.png');
         App.game.load.json('overworld-tile-data', 'assets/overworld-tiles.json');
+
+        console.info('Tile files loaded successfully.');
     }
 
     drawAssets(): {} {

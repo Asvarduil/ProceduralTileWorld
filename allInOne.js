@@ -17,6 +17,7 @@ define("app/states/init.state", ["require", "exports", "app/app"], function (req
             return _super !== null && _super.apply(this, arguments) || this;
         }
         InitState.prototype.preload = function () {
+            console.info('Loading all kits...');
             app_1.App.kits.loadKit("Tiles");
         };
         InitState.prototype.create = function () {
@@ -91,7 +92,25 @@ define("app/states/game-over.state", ["require", "exports"], function (require, 
     }(Phaser.State));
     exports.GameOverState = GameOverState;
 });
-define("app/states/game.state", ["require", "exports"], function (require, exports) {
+define("kits/world-gen/world-generator", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var WorldGenerator = /** @class */ (function () {
+        function WorldGenerator() {
+        }
+        WorldGenerator.prototype.generateTiles = function (args) {
+            // Basic form: return tile 0 per the width/height parameters.
+            var result = [];
+            for (var current = 0; current < args.width * args.height; current++) {
+                result.push(0);
+            }
+            return result;
+        };
+        return WorldGenerator;
+    }());
+    exports.WorldGenerator = WorldGenerator;
+});
+define("app/states/game.state", ["require", "exports", "app/app"], function (require, exports, app_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var GameState = /** @class */ (function (_super) {
@@ -102,6 +121,17 @@ define("app/states/game.state", ["require", "exports"], function (require, expor
         GameState.prototype.preload = function () {
         };
         GameState.prototype.create = function () {
+            // TODO: Pull map that was generated with world builder.
+            var worldGenKit = app_3.App.kits.getByName("WorldGen").drawAssets();
+            var generator = worldGenKit["generator"];
+            var params = {
+                width: 2,
+                height: 2,
+                baseTileCount: 1,
+                performUpBordering: false
+            };
+            var tiles = generator.generateTiles(params);
+            console.info('Tiles for screen generated', tiles);
         };
         GameState.prototype.update = function () {
         };
@@ -111,12 +141,13 @@ define("app/states/game.state", ["require", "exports"], function (require, expor
     }(Phaser.State));
     exports.GameState = GameState;
 });
-define("app/states/states", ["require", "exports", "app/app", "app/states/init.state", "app/states/title.state", "app/states/victory.state", "app/states/game-over.state", "app/states/game.state"], function (require, exports, app_3, init_state_1, title_state_1, victory_state_1, game_over_state_1, game_state_1) {
+define("app/states/states", ["require", "exports", "app/app", "app/states/init.state", "app/states/title.state", "app/states/victory.state", "app/states/game-over.state", "app/states/game.state"], function (require, exports, app_4, init_state_1, title_state_1, victory_state_1, game_over_state_1, game_state_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var StateManager = /** @class */ (function () {
         function StateManager() {
             this.states = [];
+            console.info('State manager has been initialized');
             this.states = [
                 { name: 'Init', class: init_state_1.InitState },
                 { name: 'Title', class: title_state_1.TitleState },
@@ -127,15 +158,15 @@ define("app/states/states", ["require", "exports", "app/app", "app/states/init.s
             ];
             for (var _i = 0, _a = this.states; _i < _a.length; _i++) {
                 var state = _a[_i];
-                app_3.App.game.state.add(state.name, state.class);
+                app_4.App.game.state.add(state.name, state.class);
             }
         }
         //#region Methods
         StateManager.prototype.load = function (stateName) {
-            app_3.App.game.state.start(stateName, true, false);
+            app_4.App.game.state.start(stateName, true, false);
         };
         StateManager.prototype.overlay = function (stateName) {
-            app_3.App.game.state.start(stateName, false, false);
+            app_4.App.game.state.start(stateName, false, false);
         };
         //#endregion Methods
         //#region Predefined State Macros
@@ -159,7 +190,7 @@ define("kits/ikit", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
 });
-define("kits/tiles/tiles.kit", ["require", "exports", "app/app"], function (require, exports, app_4) {
+define("kits/tiles/tiles.kit", ["require", "exports", "app/app"], function (require, exports, app_5) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var TilesKit = /** @class */ (function () {
@@ -170,19 +201,45 @@ define("kits/tiles/tiles.kit", ["require", "exports", "app/app"], function (requ
         };
         TilesKit.prototype.loadAssets = function () {
             // Overworld tileset...
-            app_4.App.game.load.image('overworld-tiles', 'assets/overworld-tiles.png');
-            app_4.App.game.load.json('overworld-tile-data', 'assets/overworld-tiles.json');
+            app_5.App.game.load.image('overworld-tiles', 'assets/overworld-tiles.png');
+            app_5.App.game.load.json('overworld-tile-data', 'assets/overworld-tiles.json');
+            console.info('Tile files loaded successfully.');
         };
         TilesKit.prototype.drawAssets = function () {
             return {
-                'overworldTileData': app_4.App.game.cache.getJSON('overworld-tile-data')
+                'overworldTileData': app_5.App.game.cache.getJSON('overworld-tile-data')
             };
         };
         return TilesKit;
     }());
     exports.TilesKit = TilesKit;
 });
-define("kits/kits", ["require", "exports", "kits/tiles/tiles.kit"], function (require, exports, tiles_kit_1) {
+define("kits/world-gen/world-gen.kit", ["require", "exports", "app/app", "kits/world-gen/world-generator"], function (require, exports, app_6, world_generator_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var WorldGenKit = /** @class */ (function () {
+        function WorldGenKit() {
+        }
+        WorldGenKit.prototype.hasDependencies = function () {
+            var hasTilesKit = app_6.App.kits.exists('Tiles');
+            var isSimplexNoisePresent = !(!window['SimplexNoise']);
+            return hasTilesKit
+                && isSimplexNoisePresent;
+        };
+        WorldGenKit.prototype.loadAssets = function () {
+            // N/A; This is a code-only kit.
+        };
+        WorldGenKit.prototype.drawAssets = function () {
+            // Return an object that contains relevant assets for the kit.
+            return {
+                'generator': new world_generator_1.WorldGenerator()
+            };
+        };
+        return WorldGenKit;
+    }());
+    exports.WorldGenKit = WorldGenKit;
+});
+define("kits/kits", ["require", "exports", "kits/tiles/tiles.kit", "kits/world-gen/world-gen.kit"], function (require, exports, tiles_kit_1, world_gen_kit_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var KitManager = /** @class */ (function () {
@@ -191,7 +248,8 @@ define("kits/kits", ["require", "exports", "kits/tiles/tiles.kit"], function (re
             console.info('Kit manager has been initialized.');
             this.kits = [
                 // Put all your kits here!
-                { name: 'Tiles', kit: new tiles_kit_1.TilesKit() }
+                { name: 'Tiles', kit: new tiles_kit_1.TilesKit() },
+                { name: 'WorldGen', kit: new world_gen_kit_1.WorldGenKit() }
             ];
         }
         KitManager.prototype.loadKit = function (name) {
@@ -211,6 +269,9 @@ define("kits/kits", ["require", "exports", "kits/tiles/tiles.kit"], function (re
                 result = kit.kit;
             }
             return result;
+        };
+        KitManager.prototype.exists = function (name) {
+            return this.getByName(name) != null;
         };
         return KitManager;
     }());
@@ -264,6 +325,7 @@ define("kits/template/template.kit", ["require", "exports"], function (require, 
         function TemplateKit() {
         }
         TemplateKit.prototype.hasDependencies = function () {
+            return true;
         };
         TemplateKit.prototype.loadAssets = function () {
         };
@@ -274,27 +336,5 @@ define("kits/template/template.kit", ["require", "exports"], function (require, 
         return TemplateKit;
     }());
     exports.TemplateKit = TemplateKit;
-});
-define("kits/world-gen/world-gen.kit", ["require", "exports", "app/app"], function (require, exports, app_5) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var WorldGenKit = /** @class */ (function () {
-        function WorldGenKit() {
-        }
-        WorldGenKit.prototype.hasDependencies = function () {
-            var hasTilesKit = app_5.App.kits.getByName("Tiles") != null;
-            var simplexNoisePresent = window.SimplexNoise != null;
-            return hasTilesKit
-                && simplexNoisePresent;
-        };
-        WorldGenKit.prototype.loadAssets = function () {
-        };
-        WorldGenKit.prototype.drawAssets = function () {
-            // Return an object that contains relevant assets for the kit.
-            return {};
-        };
-        return WorldGenKit;
-    }());
-    exports.WorldGenKit = WorldGenKit;
 });
 //# sourceMappingURL=allInOne.js.map
